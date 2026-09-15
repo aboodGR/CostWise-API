@@ -1,0 +1,33 @@
+C:\Users\Pc\source\repos\CostWise API\CostWise API\bin\Debug\net10.0\appsettings.Development.json
+C:\Users\Pc\source\repos\CostWise API\CostWise API\bin\Debug\net10.0\appsettings.json
+C:\Users\Pc\source\repos\CostWise API\CostWise API\bin\Debug\net10.0\CostWise API.staticwebassets.endpoints.json
+C:\Users\Pc\source\repos\CostWise API\CostWise API\bin\Debug\net10.0\CostWise API.exe
+C:\Users\Pc\source\repos\CostWise API\CostWise API\bin\Debug\net10.0\CostWise API.deps.json
+C:\Users\Pc\source\repos\CostWise API\CostWise API\bin\Debug\net10.0\CostWise API.runtimeconfig.json
+C:\Users\Pc\source\repos\CostWise API\CostWise API\bin\Debug\net10.0\CostWise API.dll
+C:\Users\Pc\source\repos\CostWise API\CostWise API\bin\Debug\net10.0\CostWise API.pdb
+C:\Users\Pc\source\repos\CostWise API\CostWise API\bin\Debug\net10.0\Microsoft.AspNetCore.OpenApi.dll
+C:\Users\Pc\source\repos\CostWise API\CostWise API\bin\Debug\net10.0\Microsoft.OpenApi.dll
+C:\Users\Pc\source\repos\CostWise API\CostWise API\obj\Debug\net10.0\CostWise API.csproj.AssemblyReference.cache
+C:\Users\Pc\source\repos\CostWise API\CostWise API\obj\Debug\net10.0\rpswa.dswa.cache.json
+C:\Users\Pc\source\repos\CostWise API\CostWise API\obj\Debug\net10.0\CostWise API.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Pc\source\repos\CostWise API\CostWise API\obj\Debug\net10.0\CostWise API.AssemblyInfoInputs.cache
+C:\Users\Pc\source\repos\CostWise API\CostWise API\obj\Debug\net10.0\CostWise API.AssemblyInfo.cs
+C:\Users\Pc\source\repos\CostWise API\CostWise API\obj\Debug\net10.0\CostWise API.csproj.CoreCompileInputs.cache
+C:\Users\Pc\source\repos\CostWise API\CostWise API\obj\Debug\net10.0\CostWise API.MvcApplicationPartsAssemblyInfo.cs
+C:\Users\Pc\source\repos\CostWise API\CostWise API\obj\Debug\net10.0\CostWise API.MvcApplicationPartsAssemblyInfo.cache
+C:\Users\Pc\source\repos\CostWise API\CostWise API\obj\Debug\net10.0\rjimswa.dswa.cache.json
+C:\Users\Pc\source\repos\CostWise API\CostWise API\obj\Debug\net10.0\rjsmrazor.dswa.cache.json
+C:\Users\Pc\source\repos\CostWise API\CostWise API\obj\Debug\net10.0\rjsmcshtml.dswa.cache.json
+C:\Users\Pc\source\repos\CostWise API\CostWise API\obj\Debug\net10.0\scopedcss\bundle\CostWise API.styles.css
+C:\Users\Pc\source\repos\CostWise API\CostWise API\obj\Debug\net10.0\staticwebassets.build.json
+C:\Users\Pc\source\repos\CostWise API\CostWise API\obj\Debug\net10.0\staticwebassets.build.json.cache
+C:\Users\Pc\source\repos\CostWise API\CostWise API\obj\Debug\net10.0\staticwebassets.development.json
+C:\Users\Pc\source\repos\CostWise API\CostWise API\obj\Debug\net10.0\staticwebassets.build.endpoints.json
+C:\Users\Pc\source\repos\CostWise API\CostWise API\obj\Debug\net10.0\swae.build.ex.cache
+C:\Users\Pc\source\repos\CostWise API\CostWise API\obj\Debug\net10.0\CostWise.707856FD.Up2Date
+C:\Users\Pc\source\repos\CostWise API\CostWise API\obj\Debug\net10.0\CostWise API.dll
+C:\Users\Pc\source\repos\CostWise API\CostWise API\obj\Debug\net10.0\refint\CostWise API.dll
+C:\Users\Pc\source\repos\CostWise API\CostWise API\obj\Debug\net10.0\CostWise API.pdb
+C:\Users\Pc\source\repos\CostWise API\CostWise API\obj\Debug\net10.0\CostWise API.genruntimeconfig.cache
+C:\Users\Pc\source\repos\CostWise API\CostWise API\obj\Debug\net10.0\ref\CostWise API.dll
