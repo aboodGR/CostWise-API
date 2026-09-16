@@ -37,40 +37,6 @@ Middleware
 I separated the controllers, interfaces, services, and models to keep the project organized.
 
 
-Endpoints
-
-Categories
-
-GET    /Categories
-GET    /Categories/{id}
-POST   /Categories
-PUT    /Categories/{id}
-DELETE /Categories/{id}
-
-
-Expenses
-
-GET    /Expense
-GET    /Expense/{id}
-POST   /Expense
-PUT    /Expense/{id}
-DELETE /Expense/{id}
-
-
-### Income
-
-GET    /Income
-GET    /Income/{id}
-POST   /Income
-PUT    /Income/{id}
-DELETE /Income/{id}
-
-
-Reports
-
-GET    /Reports/summary
-
-
 Storage
 
 For now, the project uses in-memory lists to store the data.
