@@ -1,6 +1,8 @@
 using CostWise_API.Configuration;
+using CostWise_API.Data;
 using CostWise_API.Interfaces;
 using CostWise_API.Services;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,10 +12,14 @@ builder.Services.AddControllers();
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
 
-builder.Services.AddSingleton<ICategoryService, CategoryService>();
-builder.Services.AddSingleton<IExpenseService, ExpenseService>();
-builder.Services.AddSingleton<IIncomeService, IncomeService>();
-builder.Services.AddSingleton<IReportService, ReportSummaryService>();
+builder.Services.AddDbContext<ApplicationDbContext>(options =>
+    options.UseSqlServer(
+        builder.Configuration.GetConnectionString("DefaultConnection")));
+
+builder.Services.AddScoped<ICategoryService, CategoryService>();
+builder.Services.AddScoped<IExpenseService, ExpenseService>();
+builder.Services.AddScoped<IIncomeService, IncomeService>();
+builder.Services.AddScoped<IReportService, ReportSummaryService>();
 
 builder.Services.Configure<CostWiseSettings>(
     builder.Configuration.GetSection("CostWiseSettings"));

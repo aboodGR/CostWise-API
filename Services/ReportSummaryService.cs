@@ -35,7 +35,7 @@ namespace CostWise_API.Services
             };
 
         }
-        //trhis is a temp method just to read the values of the confg
+        //this is a temp method just to read the values of the confg
         public string GetSettings()
         {
             return $"Currency: {settings.Currency}, Max Expense: {settings.MaxExpenseAmount}";

@@ -1,53 +1,60 @@
-﻿using CostWise_API.Interfaces;
+﻿using CostWise_API.Data;
+using CostWise_API.Interfaces;
 using CostWise_API.Models;
 
 namespace CostWise_API.Services
 {
     public class IncomeService : IIncomeService
     {
-        List<Income> listIncome = new List<Income>();
-        int idCounter = 0;
+        private readonly ApplicationDbContext _context;
+        public IncomeService(ApplicationDbContext context)
+        {
+            _context = context;
+        }
         public Income AddIncome(Income income)
         {
-            idCounter++;
-            income.Id = idCounter;
-            listIncome.Add(income);
+            
+            _context.Income.Add(income);
+            _context.SaveChanges();
             return income;
         }
 
         public bool DeleteIncome(int Id)
         {
-            var delete = listIncome.FirstOrDefault(c => c.Id == Id);
+            var delete = _context.Income.FirstOrDefault(c => c.Id == Id);
             if (delete == null)
             {
                 return false;
             }
-            listIncome.Remove(delete);
+            _context.Income.Remove(delete);
+            _context.SaveChanges();
             return true;
         }
 
         public List<Income> GetAllIncome()
         {
-            return listIncome;
+            return _context.Income.ToList();
         }
 
         public Income? GetIncomeById(int Id)
         {
-            var getId = listIncome.FirstOrDefault(c => c.Id == Id);
+            var getId = _context.Income.FirstOrDefault(c => c.Id == Id);
             return getId;
         }
 
         public Income? UpdateIncome(int Id, Income income)
         {
-            var idChecker = listIncome.FirstOrDefault(c => c.Id == Id);
+            var idChecker = _context.Income.FirstOrDefault(c => c.Id == Id);
             if (idChecker == null)
             {
                 return null;
             }
-            income.Id = idChecker.Id;
-            listIncome.Remove(idChecker);
-            listIncome.Add(income);
-            return income;
+            idChecker.Title = income.Title;
+            idChecker.Amount = income.Amount;
+            idChecker.Date = income.Date;
+            idChecker.Description = income.Description;
+            _context.SaveChanges();
+            return idChecker;
         }
     }
 }

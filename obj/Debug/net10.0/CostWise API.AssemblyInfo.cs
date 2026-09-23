@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("CostWise API")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+e7a7bf03ea3028c9d448b2465a92be6c87fe45c6")]
 [assembly: System.Reflection.AssemblyProductAttribute("CostWise API")]
 [assembly: System.Reflection.AssemblyTitleAttribute("CostWise API")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

@@ -1,53 +1,56 @@
-﻿using CostWise_API.Interfaces;
+﻿using CostWise_API.Data;
+using CostWise_API.Interfaces;
 using CostWise_API.Models;
-using Microsoft.AspNetCore.Http.HttpResults;
 
 namespace CostWise_API.Services
 {
     public class CategoryService : ICategoryService
     {
-        List<Category> listcategory = new List<Category>();
-        int idcounter = 0;
+        private readonly ApplicationDbContext _context;
+        public CategoryService(ApplicationDbContext context)
+        {
+            _context = context;
+        }
         public Category? AddCategory(Category category)
         {
-            
-            idcounter++;
-            category.Id = idcounter;
-            listcategory.Add(category);
+            _context.Category.Add(category);
+            _context.SaveChanges();
             return category;
         }
 
         public bool DeleteCategory(int Id)
         {
-            var delete = listcategory.FirstOrDefault(c => c.Id == Id);
+            var delete = _context.Category.FirstOrDefault(c => c.Id == Id);
             if (delete == null) {
                 return false;
             }
-            listcategory.Remove(delete);
+            _context.Category.Remove(delete);
+            _context.SaveChanges();
+
             return true;
         }
 
         public List<Category> GetAllCategories()    
         {
-            return listcategory;
+            return _context.Category.ToList();
         }
 
         public Category? GetCategoryById(int Id)
         {
-            var getId = listcategory.FirstOrDefault(c => c.Id == Id);
+            var getId = _context.Category.FirstOrDefault(c => c.Id == Id);
             return getId;
         }
 
         public Category? UpdateCategory(int Id, Category category)
         {
-            var idChecker = listcategory.FirstOrDefault(c => c.Id == Id);
+            var idChecker = _context.Category.FirstOrDefault(c => c.Id == Id);
             if (idChecker == null) {
                 return null;
             }
-            category.Id = idChecker.Id;
-            listcategory.Remove(idChecker);
-            listcategory.Add(category);
-            return category;
+            idChecker.Name = category.Name;
+            
+            _context.SaveChanges();
+            return idChecker;
         }
     }
 }
