@@ -56,6 +56,10 @@ You can test the API using Swagger or Postman.
 
 Project Status
 
-This is still a work in progress and I'm building it while learning ASP.NET Core.
+This project is still in progress.
 
-The next step is connecting the API to a real database and improving the project further.
+The API is now connected to SQL Server using Entity Framework Core, and the main services are using the database instead of in-memory lists.
+
+I also added the relationship between Categories and Expenses and started loading related data with EF Core.
+
+Next I will continue improving the controllers, validation, and the rest of the backend features.
