@@ -16,6 +16,7 @@ Right now the API has:
 * Expense and income summary
 * Configuration using the Options Pattern
 * Request timing middleware
+* Connected to SMSS Local DB
 
 Technologies
 
@@ -23,25 +24,8 @@ Technologies
 * ASP.NET Core
 * .NET
 * LINQ
-* Dependency Injection
+* Entity Framework
 
-Project Structure
-
-Controllers
-Interfaces
-Services
-Models
-Configuration
-Middleware
-
-I separated the controllers, interfaces, services, and models to keep the project organized.
-
-
-Storage
-
-For now, the project uses in-memory lists to store the data.
-
-I will connect it to SQL Server using Entity Framework Core later.
 
 Running the project
 
