@@ -15,27 +15,31 @@ namespace CostWise_API.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetAllCategoriesAc() {
-            return Ok(category.GetAllCategories());
+        public async Task<IActionResult> GetAllCategoriesAc() {
+            return Ok(await category.GetAllCategories());
         }
         [HttpGet("{id}")]
-        public IActionResult GetCategoryByIdAc(int id) {
-            return Ok(category.GetCategoryById(id));
+        public async Task<IActionResult> GetCategoryByIdAc(int id) {
+            var getId = await category.GetCategoryById(id);
+            if (getId == null) {
+                return NotFound();
+            }
+            return Ok(getId);
         }
         [HttpPost]
-        public IActionResult AddCategoryAc(Category category) {
-            return Ok(this.category.AddCategory(category));
+        public async Task<IActionResult> AddCategoryAc(Category category) {
+            return Ok(await this.category.AddCategory(category));
         }
         [HttpPut]
-        public IActionResult UpdateCategoryAc(int id , Category category) {
-            var updated = this.category.UpdateCategory(id,category);
+        public async Task<IActionResult> UpdateCategoryAc(int id , Category category) {
+            var updated = await this.category.UpdateCategory(id,category);
             if (updated == null)
                 return NotFound();
             return Ok(updated);
         }
         [HttpDelete]
-        public IActionResult DeleteCategoryAc(int id) {
-            var deleted = this.category.DeleteCategory(id);
+        public async Task<IActionResult> DeleteCategoryAc(int id) {
+            var deleted = await this.category.DeleteCategory(id);
             if (deleted == false)
                 return NotFound();
             return Ok(deleted);

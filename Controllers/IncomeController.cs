@@ -1,6 +1,5 @@
 ﻿using CostWise_API.Interfaces;
 using CostWise_API.Models;
-using CostWise_API.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CostWise_API.Controllers
@@ -16,32 +15,36 @@ namespace CostWise_API.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetAllIncomeAc()
+        public async Task<IActionResult> GetAllIncomeAc()
         {
-            return Ok(income.GetAllIncome());
+            return Ok(await income.GetAllIncome());
         }
         [HttpGet("{id}")]
-        public IActionResult GetIncomeByIdAc(int id)
+        public async Task<IActionResult> GetIncomeByIdAc(int id)
         {
-            return Ok(income.GetIncomeById(id));
+            var result = await income.GetIncomeById(id);
+            if (result == null)
+                return NotFound();
+
+            return Ok(result);
         }
         [HttpPost]
-        public IActionResult AddIncomeAc(Income income)
+        public async Task<IActionResult> AddIncomeAc(Income income)
         {
-            return Ok(this.income.AddIncome(income));
+            return Ok(await this.income.AddIncome(income));
         }
         [HttpPut]
-        public IActionResult UpdateIncomeAc(int id, Income income)
+        public async Task<IActionResult> UpdateIncomeAc(int id, Income income)
         {
-            var updated = this.income.UpdateIncome(id, income);
+            var updated = await this.income.UpdateIncome(id, income);
             if (updated == null)
                 return NotFound();
             return Ok(updated);
         }
         [HttpDelete]
-        public IActionResult DeleteIncomeAc(int id)
+        public async Task<IActionResult> DeleteIncomeAc(int id)
         {
-            var deleted = this.income.DeleteIncome(id);
+            var deleted = await this.income.DeleteIncome(id);
             if (deleted == false)
                 return NotFound();
             return Ok(deleted);

@@ -1,9 +1,7 @@
 ﻿using CostWise_API.Data;
 using CostWise_API.Interfaces;
 using CostWise_API.Models;
-using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.EntityFrameworkCore;
-using System.Reflection.Metadata;
 
 namespace CostWise_API.Services
 {
@@ -14,61 +12,63 @@ namespace CostWise_API.Services
         {
             _context = context;
         }
-        public Expense? AddExpense(Expense expense)
+        public async Task<Expense?> AddExpense(Expense expense)
         {
-            var check = _context.Category.Any(x=>x.Id == expense.CategoryId);
+            var check = await _context.Category.AnyAsync(x=>x.Id == expense.CategoryId);
             if (check) {
-                _context.Expense.Add(expense);
-                _context.SaveChanges();
+                await _context.Expense.AddAsync(expense);
+                await _context.SaveChangesAsync();
                 return expense;
             }
             return null;
             
         }
 
-        public bool DeleteExpense(int Id)
+        public async Task<bool> DeleteExpense(int Id)
         {
-            var delete = _context.Expense.FirstOrDefault(c => c.Id == Id);
+            var delete = await _context.Expense.FirstOrDefaultAsync(c => c.Id == Id);
             if (delete == null)
             {
                 return false;
             }
             _context.Expense.Remove(delete);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
             return true;
         }
 
-        public List<Expense> GetAllExpenses()
+        public async Task<List<Expense>> GetAllExpenses()
         {
-            var expense = _context.Expense
+            var expense = await _context.Expense
                 .Include(x => x.Category)
-                .ToList();
+                .AsNoTracking()
+                .ToListAsync();
             return expense;
         }
 
-        public Expense? GetExpenseById(int Id)
+        public async Task<Expense?> GetExpenseById(int Id)
         {
-            var getId = _context.Expense
+            var getId = await _context.Expense
                 .Include(x=>x.Category)
-                .FirstOrDefault(c => c.Id == Id);
+                .AsNoTracking()
+                .FirstOrDefaultAsync(c => c.Id == Id);
             return getId;
         }
 
-        public Expense? UpdateExpense(int Id, Expense expense)
+        public async Task<Expense?> UpdateExpense(int Id, Expense expense)
         {
-            var idChecker = _context.Expense.FirstOrDefault(c => c.Id == Id);
+            var idChecker = await _context.Expense.FirstOrDefaultAsync(c => c.Id == Id);
             if (idChecker == null)
             {
                 return null;
             }
-            var check = _context.Category.Any(x => x.Id == expense.CategoryId);
+            var check = await _context.Category.AnyAsync(x => x.Id == expense.CategoryId);
             if (check) {
                 idChecker.Title = expense.Title;
                 idChecker.Amount = expense.Amount;
                 idChecker.CategoryId = expense.CategoryId;
                 idChecker.Date = expense.Date;
                 idChecker.Description = expense.Description;
-                _context.SaveChanges();
+                await _context.SaveChangesAsync();
                 return idChecker;
             }
             return null;

@@ -1,4 +1,5 @@
 ﻿using CostWise_API.Configuration;
+using CostWise_API.Data;
 using CostWise_API.Interfaces;
 using CostWise_API.Models;
 using Microsoft.Extensions.Options;
@@ -7,31 +8,32 @@ namespace CostWise_API.Services
 {
     public class ReportSummaryService : IReportService
     {
-        private readonly IExpenseService expenseService;
-        private readonly IIncomeService incomeService;
+        private readonly ApplicationDbContext _context;
         private readonly CostWiseSettings settings;
 
-        public ReportSummaryService(IExpenseService expenseService, IIncomeService incomeService, IOptions<CostWiseSettings> options)
+        public ReportSummaryService(ApplicationDbContext context,IOptions<CostWiseSettings> options)
         {
-            this.expenseService = expenseService;
-            this.incomeService = incomeService;
+            _context = context;
             settings = options.Value;
         }
 
 
         public ReportSummary GetSummary()
         {
-            decimal amountExp = expenseService.GetAllExpenses().Sum(c => c.Amount);
 
-            decimal amountInc = incomeService.GetAllIncome().Sum(c => c.Amount);
-
-            decimal TotalAmmount = amountInc - amountExp;
+            var amountExp = _context.Expense.Any().
+                ? _context.Expense.Sum(c => c.Amount)
+                : 0;
+            var amountInc = _context.Income.Any()
+                ? _context.Income.Sum(c=>c.Amount)
+                : 0 ;
+            decimal balance = amountInc - amountExp;
 
             return new ReportSummary
             {
                 TotalIncome = amountInc,
                 TotalExpenses = amountExp,
-                Balance = TotalAmmount
+                Balance = balance
             };
 
         }

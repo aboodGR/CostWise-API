@@ -1,6 +1,7 @@
 ﻿using CostWise_API.Data;
 using CostWise_API.Interfaces;
 using CostWise_API.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace CostWise_API.Services
 {
@@ -11,45 +12,45 @@ namespace CostWise_API.Services
         {
             _context = context;
         }
-        public Category? AddCategory(Category category)
+        public async Task<Category?> AddCategory(Category category)
         {
-            _context.Category.Add(category);
-            _context.SaveChanges();
+            await _context.Category.AddAsync(category);
+            await _context.SaveChangesAsync();
             return category;
         }
 
-        public bool DeleteCategory(int Id)
+        public async Task<bool> DeleteCategory(int Id)
         {
-            var delete = _context.Category.FirstOrDefault(c => c.Id == Id);
+            var delete = await _context.Category.FirstOrDefaultAsync(c => c.Id == Id);
             if (delete == null) {
                 return false;
             }
             _context.Category.Remove(delete);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
 
             return true;
         }
 
-        public List<Category> GetAllCategories()    
+        public async Task<List<Category>> GetAllCategories()    
         {
-            return _context.Category.ToList();
+            return await _context.Category.AsNoTracking().ToListAsync();
         }
 
-        public Category? GetCategoryById(int Id)
+        public async Task<Category?> GetCategoryById(int Id)
         {
-            var getId = _context.Category.FirstOrDefault(c => c.Id == Id);
+            var getId = await _context.Category.AsNoTracking().FirstOrDefaultAsync(c => c.Id == Id);
             return getId;
         }
 
-        public Category? UpdateCategory(int Id, Category category)
+        public async Task<Category?> UpdateCategory(int Id, Category category)
         {
-            var idChecker = _context.Category.FirstOrDefault(c => c.Id == Id);
+            var idChecker = await _context.Category.FirstOrDefaultAsync(c => c.Id == Id);
             if (idChecker == null) {
                 return null;
             }
             idChecker.Name = category.Name;
             
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
             return idChecker;
         }
     }

@@ -15,32 +15,40 @@ namespace CostWise_API.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetAllExpenseAc()
+        public async Task<IActionResult> GetAllExpenseAc()
         {
-            return Ok(expense.GetAllExpenses());
+            return Ok(await expense.GetAllExpenses());
         }
         [HttpGet("{id}")]
-        public IActionResult GetExpenseByIdAc(int id)
+        public async Task<IActionResult> GetExpenseByIdAc(int id)
         {
-            return Ok(expense.GetExpenseById(id));
+            var result = await expense.GetExpenseById(id);
+            if (result == null) {
+                return NotFound();
+            }
+            return Ok();
         }
         [HttpPost]
-        public IActionResult AddExpenseAc(Expense expense)
+        public async Task<IActionResult> AddExpenseAc(Expense expense)
         {
-            return Ok(this.expense.AddExpense(expense));
+            var result = await this.expense.AddExpense(expense);
+            if (result == null) {
+                return BadRequest("Category does not exist.");
+            }
+            return Ok(result);
         }
         [HttpPut]
-        public IActionResult UpdateExpenseAc(int id, Expense expense)
+        public async Task<IActionResult> UpdateExpenseAc(int id, Expense expense)
         {
-            var updated = this.expense.UpdateExpense(id, expense);
+            var updated = await this.expense.UpdateExpense(id, expense);
             if (updated == null)
-                return NotFound();
+                return BadRequest();
             return Ok(updated);
         }
         [HttpDelete]
-        public IActionResult DeleteexpenseAc(int id)
+        public async Task<IActionResult> DeleteexpenseAc(int id)
         {
-            var deleted = this.expense.DeleteExpense(id);
+            var deleted = await this.expense.DeleteExpense(id);
             if (deleted == false)
                 return NotFound();
             return Ok(deleted);

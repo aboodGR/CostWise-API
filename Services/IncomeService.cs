@@ -1,6 +1,7 @@
 ﻿using CostWise_API.Data;
 using CostWise_API.Interfaces;
 using CostWise_API.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace CostWise_API.Services
 {
@@ -11,40 +12,39 @@ namespace CostWise_API.Services
         {
             _context = context;
         }
-        public Income AddIncome(Income income)
+        public async Task<Income> AddIncome(Income income)
         {
-            
-            _context.Income.Add(income);
-            _context.SaveChanges();
+            await _context.Income.AddAsync(income);
+            await _context.SaveChangesAsync();
             return income;
         }
 
-        public bool DeleteIncome(int Id)
+        public async Task<bool> DeleteIncome(int Id)
         {
-            var delete = _context.Income.FirstOrDefault(c => c.Id == Id);
+            var delete = await _context.Income.FirstOrDefaultAsync(c => c.Id == Id);
             if (delete == null)
             {
                 return false;
             }
             _context.Income.Remove(delete);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
             return true;
         }
 
-        public List<Income> GetAllIncome()
+        public async Task<List<Income>> GetAllIncome()
         {
-            return _context.Income.ToList();
+            return await _context.Income.AsNoTracking().ToListAsync();
         }
 
-        public Income? GetIncomeById(int Id)
+        public async Task<Income?> GetIncomeById(int Id)
         {
-            var getId = _context.Income.FirstOrDefault(c => c.Id == Id);
+            var getId = await _context.Income.AsNoTracking().FirstOrDefaultAsync(c => c.Id == Id);
             return getId;
         }
 
-        public Income? UpdateIncome(int Id, Income income)
+        public async Task<Income?> UpdateIncome(int Id, Income income)
         {
-            var idChecker = _context.Income.FirstOrDefault(c => c.Id == Id);
+            var idChecker = await _context.Income.FirstOrDefaultAsync(c => c.Id == Id);
             if (idChecker == null)
             {
                 return null;
@@ -53,7 +53,7 @@ namespace CostWise_API.Services
             idChecker.Amount = income.Amount;
             idChecker.Date = income.Date;
             idChecker.Description = income.Description;
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
             return idChecker;
         }
     }
