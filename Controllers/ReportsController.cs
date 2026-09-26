@@ -14,8 +14,8 @@ namespace CostWise_API.Controllers
         }
 
         [HttpGet("summary")]
-        public IActionResult GetSummary() {
-            return Ok(reportService.GetSummary());
+        public async Task<IActionResult> GetSummary() {
+            return Ok(await reportService.GetSummary());
         }
 
     }

@@ -1,4 +1,5 @@
-﻿using CostWise_API.Interfaces;
+﻿using CostWise_API.DTOs.Category;
+using CostWise_API.Interfaces;
 using CostWise_API.Models;
 using Microsoft.AspNetCore.Mvc;
 
@@ -16,23 +17,43 @@ namespace CostWise_API.Controllers
 
         [HttpGet]
         public async Task<IActionResult> GetAllCategoriesAc() {
-            return Ok(await category.GetAllCategories());
+            var result = await category.GetAllCategories();
+            var response = result.Select( x => new CategroyResponseDto {
+                Id = x.Id,
+                Name = x.Name
+            });
+            return Ok(response);
         }
         [HttpGet("{id}")]
         public async Task<IActionResult> GetCategoryByIdAc(int id) {
-            var getId = await category.GetCategoryById(id);
-            if (getId == null) {
+            var result = await category.GetCategoryById(id);
+            if (result == null) {
                 return NotFound();
             }
-            return Ok(getId);
+            var response = new CategroyResponseDto {
+                Id = result.Id,
+                Name = result.Name
+            };
+            return Ok(response);
         }
         [HttpPost]
-        public async Task<IActionResult> AddCategoryAc(Category category) {
-            return Ok(await this.category.AddCategory(category));
+        public async Task<IActionResult> AddCategoryAc(UpdateCategoryDtos updateCategoryDtos) {
+            var newCategory = new Category {
+                Name = updateCategoryDtos.Name
+            };
+            var categroies = await category.AddCategory(newCategory);
+            if (categroies == null) {
+                return BadRequest();
+            }
+            return Ok(categroies);
         }
         [HttpPut]
-        public async Task<IActionResult> UpdateCategoryAc(int id , Category category) {
-            var updated = await this.category.UpdateCategory(id,category);
+        public async Task<IActionResult> UpdateCategoryAc(int id , CreateCategoryDto createCategoryDto) {
+            var newCategory = new Category
+            {
+                Name = createCategoryDto.Name
+            };
+            var updated = await this.category.UpdateCategory(id, newCategory);
             if (updated == null)
                 return NotFound();
             return Ok(updated);

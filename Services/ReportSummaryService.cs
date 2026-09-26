@@ -2,6 +2,7 @@
 using CostWise_API.Data;
 using CostWise_API.Interfaces;
 using CostWise_API.Models;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 
 namespace CostWise_API.Services
@@ -18,14 +19,14 @@ namespace CostWise_API.Services
         }
 
 
-        public ReportSummary GetSummary()
+        public async Task<ReportSummary> GetSummary()
         {
 
-            var amountExp = _context.Expense.Any().
-                ? _context.Expense.Sum(c => c.Amount)
+            var amountExp = await _context.Expense.AnyAsync()
+                ? await _context.Expense.SumAsync(c => c.Amount)
                 : 0;
-            var amountInc = _context.Income.Any()
-                ? _context.Income.Sum(c=>c.Amount)
+            var amountInc = await _context.Income.AnyAsync()
+                ? await _context.Income.SumAsync(c=>c.Amount)
                 : 0 ;
             decimal balance = amountInc - amountExp;
 

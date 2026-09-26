@@ -1,13 +1,12 @@
-﻿using System.ComponentModel.DataAnnotations;
-
+﻿
 namespace CostWise_API.Models
 {
     public class Category
     {
         
         public int Id { get; set; }
-        public string Name { get; set; }
-        public ICollection<Expense> Expense { get; set; } = new List<Expense>();
+        public string Name { get; set; } = string.Empty;
+        public ICollection<Expense> Expenses { get; set; } = new List<Expense>();
 
     }
 }

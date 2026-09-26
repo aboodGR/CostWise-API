@@ -4,6 +4,6 @@ namespace CostWise_API.Interfaces
 {
     public interface IReportService
     {
-        ReportSummary GetSummary();
+        Task<ReportSummary> GetSummary();
     }
 }
