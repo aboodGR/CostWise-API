@@ -4,10 +4,10 @@ namespace CostWise_API.Interfaces
 {
     public interface ICategoryService
     {
-        Task<List<Category>> GetAllCategories();
-        Task<Category?> GetCategoryById(int id);
+        Task<List<Category>> GetAllCategories(int userId);
+        Task<Category?> GetCategoryById(int id, int userId);
         Task<Category?> AddCategory(Category category);
-        Task<Category?> UpdateCategory(int id, Category category);
-        Task<bool> DeleteCategory(int id);
+        Task<Category?> UpdateCategory(int id, Category category, int userId);
+        Task<bool> DeleteCategory(int id, int userId);
     }
 }

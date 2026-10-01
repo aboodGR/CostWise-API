@@ -19,9 +19,9 @@ namespace CostWise_API.Services
             return income;
         }
 
-        public async Task<bool> DeleteIncome(int Id)
+        public async Task<bool> DeleteIncome(int Id, int UserId)
         {
-            var delete = await _context.Income.FirstOrDefaultAsync(c => c.Id == Id);
+            var delete = await _context.Income.FirstOrDefaultAsync(c => c.Id == Id && c.UserId == UserId);
             if (delete == null)
             {
                 return false;
@@ -31,20 +31,20 @@ namespace CostWise_API.Services
             return true;
         }
 
-        public async Task<List<Income>> GetAllIncome()
+        public async Task<List<Income>> GetAllIncome(int UserId)
         {
-            return await _context.Income.AsNoTracking().ToListAsync();
+            return await _context.Income.Where(c => c.UserId == UserId).AsNoTracking().ToListAsync();
         }
 
-        public async Task<Income?> GetIncomeById(int Id)
+        public async Task<Income?> GetIncomeById(int Id, int UserId)
         {
-            var getId = await _context.Income.AsNoTracking().FirstOrDefaultAsync(c => c.Id == Id);
+            var getId = await _context.Income.AsNoTracking().FirstOrDefaultAsync(c => c.Id == Id && c.UserId == UserId);
             return getId;
         }
 
-        public async Task<Income?> UpdateIncome(int Id, Income income)
+        public async Task<Income?> UpdateIncome(int Id, Income income, int UserId)
         {
-            var idChecker = await _context.Income.FirstOrDefaultAsync(c => c.Id == Id);
+            var idChecker = await _context.Income.FirstOrDefaultAsync(c => c.Id == Id && c.UserId == UserId);
             if (idChecker == null)
             {
                 return null;

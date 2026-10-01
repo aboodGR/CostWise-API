@@ -24,9 +24,9 @@ namespace CostWise_API.Services
             
         }
 
-        public async Task<bool> DeleteExpense(int Id)
+        public async Task<bool> DeleteExpense(int Id, int userId)
         {
-            var delete = await _context.Expense.FirstOrDefaultAsync(c => c.Id == Id);
+            var delete = await _context.Expense.FirstOrDefaultAsync(c => c.Id == Id && c.UserId == userId);
             if (delete == null)
             {
                 return false;
@@ -36,27 +36,29 @@ namespace CostWise_API.Services
             return true;
         }
 
-        public async Task<List<Expense>> GetAllExpenses()
+        public async Task<List<Expense>> GetAllExpenses(int userId)
         {
             var expense = await _context.Expense
+                .Where(x=>x.UserId==userId)
                 .Include(x => x.Category)
                 .AsNoTracking()
                 .ToListAsync();
             return expense;
         }
 
-        public async Task<Expense?> GetExpenseById(int Id)
+        public async Task<Expense?> GetExpenseById(int Id, int userId)
         {
+
             var getId = await _context.Expense
                 .Include(x=>x.Category)
                 .AsNoTracking()
-                .FirstOrDefaultAsync(c => c.Id == Id);
+                .FirstOrDefaultAsync(c => c.Id == Id && c.UserId == userId);
             return getId;
         }
 
-        public async Task<Expense?> UpdateExpense(int Id, Expense expense)
+        public async Task<Expense?> UpdateExpense(int Id, Expense expense, int userId)
         {
-            var idChecker = await _context.Expense.FirstOrDefaultAsync(c => c.Id == Id);
+            var idChecker = await _context.Expense.FirstOrDefaultAsync(c => c.Id == Id && c.UserId == userId);
             if (idChecker == null)
             {
                 return null;

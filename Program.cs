@@ -1,7 +1,9 @@
 using CostWise_API.Configuration;
 using CostWise_API.Data;
 using CostWise_API.Interfaces;
+using CostWise_API.Models;
 using CostWise_API.Services;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -21,6 +23,8 @@ builder.Services.AddScoped<IExpenseService, ExpenseService>();
 builder.Services.AddScoped<IIncomeService, IncomeService>();
 builder.Services.AddScoped<IReportService, ReportSummaryService>();
 
+builder.Services.AddScoped<IPasswordHasher<User>, PasswordHasher<User>>();
+
 builder.Services.Configure<CostWiseSettings>(
     builder.Configuration.GetSection("CostWiseSettings"));
 
@@ -35,6 +39,7 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
+app.UseAuthentication();
 
 app.MapControllers();
 

@@ -19,13 +19,14 @@ namespace CostWise_API.Services
         }
 
 
-        public async Task<ReportSummary> GetSummary()
+        public async Task<ReportSummary> GetSummary(int userId)
         {
-
-            var amountExp = await _context.Expense.AnyAsync()
+            var userExpenses = _context.Expense.Where(x => x.UserId == userId);
+            var userIncome = _context.Income.Where(x => x.UserId == userId);
+            var amountExp = await userExpenses.AnyAsync()
                 ? await _context.Expense.SumAsync(c => c.Amount)
                 : 0;
-            var amountInc = await _context.Income.AnyAsync()
+            var amountInc = await userIncome.AnyAsync()
                 ? await _context.Income.SumAsync(c=>c.Amount)
                 : 0 ;
             decimal balance = amountInc - amountExp;

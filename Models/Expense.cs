@@ -11,6 +11,8 @@ namespace CostWise_API.Models
         public Category Category { get; set; } = null!;
         public DateOnly Date { get; set; }
         public string Description { get; set; } = string.Empty;
-        
+        public int UserId { get; set; }
+        public User User { get; set; } = null!;
+
     }
 }
