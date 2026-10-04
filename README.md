@@ -2,7 +2,6 @@
 
 CostWise is an ASP.NET Core Web API for personal finance management.
 
-<<<<<<< HEAD
 I made this project to practice the things I have been learning in .NET and ASP.NET Core and put them into one real project instead of only doing small examples.
 
 The backend is almost finished. Later I plan to build a React frontend and connect it to this API.
@@ -29,7 +28,7 @@ I built this project while learning backend development with .NET, with a focus 
 - Request timing and application logging
 - SQL Server database with EF Core migrations
 
-<<<<<<< HEAD
+
 The API currently supports:
 
 - User registration and login
@@ -203,7 +202,7 @@ Two separate test users were used to verify that users cannot access or modify e
 3. Apply EF Core migrations.
 4. Run the project:
 
-<<<<<<< HEAD
+
 Run:
 dotnet run
 
