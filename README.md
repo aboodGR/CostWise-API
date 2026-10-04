@@ -9,7 +9,7 @@ The backend is almost finished. Later I plan to build a React frontend and conne
 I built this project while learning backend development with .NET, with a focus on keeping the code simple, secure, and understandable.
 
 ## Features
->>>>>>> bdfdd89 (Complete CostWise backend authentication security and API testing)
+
 
 - User registration and login
 - Password hashing
@@ -62,7 +62,7 @@ Each authenticated user can only access their own:
 The UserId is taken from the authenticated JWT instead of being trusted from client input.
 
 Expense category ownership is also validated to prevent one user from using another user's category.
->>>>>>> bdfdd89 (Complete CostWise backend authentication security and API testing)
+
 
 ## Technologies
 
@@ -80,7 +80,6 @@ Expense category ownership is also validated to prevent one user from using anot
 - Git
 - GitHub
 - Visual Studio
->>>>>>> bdfdd89 (Complete CostWise backend authentication security and API testing)
 - Postman
 - OpenAI Codex
 
@@ -99,7 +98,6 @@ Main folders:
 - Controllers
 - Services
 - Interfaces
-<<<<<<< HEAD
 - Dependency Injection
 - Entity Framework Core
 - DTOs
@@ -193,7 +191,6 @@ The backend was manually tested across more than 100 checks covering:
 - financial report isolation
 
 Two separate test users were used to verify that users cannot access or modify each other's financial data.
->>>>>>> bdfdd89 (Complete CostWise backend authentication security and API testing)
 
 ## Running the Project
 
@@ -208,6 +205,5 @@ dotnet run
 
 And feel free to test it on Postman
 
-```bash
 dotnet run
 >>>>>>> bdfdd89 (Complete CostWise backend authentication security and API testing)
