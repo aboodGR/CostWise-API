@@ -23,12 +23,8 @@ namespace CostWise_API.Services
         {
             var userExpenses = _context.Expense.Where(x => x.UserId == userId);
             var userIncome = _context.Income.Where(x => x.UserId == userId);
-            var amountExp = await userExpenses.AnyAsync()
-                ? await _context.Expense.SumAsync(c => c.Amount)
-                : 0;
-            var amountInc = await userIncome.AnyAsync()
-                ? await _context.Income.SumAsync(c=>c.Amount)
-                : 0 ;
+            var amountExp = await userExpenses.SumAsync(c => (decimal?)c.Amount) ?? 0;
+            var amountInc = await userIncome.SumAsync(c => (decimal?)c.Amount) ?? 0;
             decimal balance = amountInc - amountExp;
 
             return new ReportSummary

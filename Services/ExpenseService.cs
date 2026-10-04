@@ -1,6 +1,7 @@
 ﻿using CostWise_API.Data;
 using CostWise_API.Interfaces;
 using CostWise_API.Models;
+using CostWise_API.Results;
 using Microsoft.EntityFrameworkCore;
 
 namespace CostWise_API.Services
@@ -14,8 +15,9 @@ namespace CostWise_API.Services
         }
         public async Task<Expense?> AddExpense(Expense expense)
         {
-            var check = await _context.Category.AnyAsync(x=>x.Id == expense.CategoryId);
-            if (check) {
+            var category = await _context.Category.FirstOrDefaultAsync(x=>x.Id == expense.CategoryId && x.UserId == expense.UserId);
+            if (category != null) {
+                expense.Category = category;
                 await _context.Expense.AddAsync(expense);
                 await _context.SaveChangesAsync();
                 return expense;
@@ -56,24 +58,37 @@ namespace CostWise_API.Services
             return getId;
         }
 
-        public async Task<Expense?> UpdateExpense(int Id, Expense expense, int userId)
+        public async Task<Result<Expense>> UpdateExpense(int Id, Expense expense, int userId)
         {
             var idChecker = await _context.Expense.FirstOrDefaultAsync(c => c.Id == Id && c.UserId == userId);
             if (idChecker == null)
             {
-                return null;
+                return new Result<Expense> {
+                    Success = false,
+                    ErrorCode = "ExpenseNotFound",
+                    ErrorMessage = "Expense Not Found"
+                };
             }
-            var check = await _context.Category.AnyAsync(x => x.Id == expense.CategoryId);
-            if (check) {
+            var category = await _context.Category.FirstOrDefaultAsync(x => x.Id == expense.CategoryId && x.UserId == userId);
+            if (category != null) {
                 idChecker.Title = expense.Title;
                 idChecker.Amount = expense.Amount;
                 idChecker.CategoryId = expense.CategoryId;
+                idChecker.Category = category;
                 idChecker.Date = expense.Date;
                 idChecker.Description = expense.Description;
                 await _context.SaveChangesAsync();
-                return idChecker;
+                return new Result<Expense>
+                {
+                    Success=true,
+                    Data = idChecker
+                };
             }
-            return null;
+            return new Result<Expense> {
+                Success = false,
+                ErrorCode = "CategoryNotFound",
+                ErrorMessage = "Category Not Found"
+            };
             
         }
     }

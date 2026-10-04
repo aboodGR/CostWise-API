@@ -76,7 +76,7 @@ namespace CostWise_API.Controllers
                 return BadRequest();
             }
 
-            return Ok(categories);
+            return Ok(new CategoryResponseDto { Id = categories.Id, Name = categories.Name });
         }
 
         [HttpPut]
@@ -92,10 +92,18 @@ namespace CostWise_API.Controllers
 
             var updated = await category.UpdateCategory(id, newCategory, userId);
 
-            if (updated == null)
-                return NotFound();
+            if (!updated.Success)
+            {
+                if (updated.ErrorCode == "CategoryNotFound")
+                    return NotFound(updated.ErrorMessage);
+                if (updated.ErrorCode == "DuplicateCategory")
+                    return BadRequest(updated.ErrorMessage);
+                return Problem("Unexpected category update result.");
+            }
+            if (updated.Data == null)
+                return Problem("Category update returned no data.");
 
-            return Ok(updated);
+            return Ok(new CategoryResponseDto { Id = updated.Data.Id, Name = updated.Data.Name });
         }
 
         [HttpDelete]

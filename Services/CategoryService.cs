@@ -2,6 +2,7 @@
 using CostWise_API.Interfaces;
 using CostWise_API.Models;
 using Microsoft.EntityFrameworkCore;
+using CostWise_API.Results;
 
 namespace CostWise_API.Services
 {
@@ -49,20 +50,31 @@ namespace CostWise_API.Services
             return getId;
         }
 
-        public async Task<Category?> UpdateCategory(int Id, Category category, int  userId)
+        public async Task<Result<Category>> UpdateCategory(int Id, Category category, int  userId)
         {
             var idChecker = await _context.Category.FirstOrDefaultAsync(c => c.Id == Id && c.UserId == userId);
             if (idChecker == null) {
-                return null;
+                return new Result<Category> { 
+                    Success = false, 
+                    ErrorCode = "CategoryNotFound", 
+                    ErrorMessage = "Category Not Found" 
+                };
             }
-            var checkedCategory = await _context.Category.AnyAsync(x => x.Name == category.Name && x.UserId == userId && x.Id != category.Id);
+            var checkedCategory = await _context.Category.AnyAsync(x => x.Name == category.Name && x.UserId == userId && x.Id != Id);
             if (checkedCategory) {
-                return null;
+                return new Result<Category> { 
+                    Success = false, 
+                    ErrorCode = "DuplicateCategory", 
+                    ErrorMessage = "Category name already exists." 
+                };
             }
             idChecker.Name = category.Name;
             
             await _context.SaveChangesAsync();
-            return idChecker;
+            return new Result<Category> { 
+                Success = true, 
+                Data = idChecker 
+            };
         }
     }
 }

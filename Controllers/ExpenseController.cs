@@ -1,6 +1,7 @@
 ﻿using CostWise_API.DTOs.Expense;
 using CostWise_API.Interfaces;
 using CostWise_API.Models;
+using CostWise_API.Results;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -73,7 +74,16 @@ namespace CostWise_API.Controllers
             if (result == null) {
                 return BadRequest("Category does not exist.");
             }
-            return Ok(result);
+            return Ok(new ExpenseResponseDto
+            {
+                Id = result.Id,
+                Title = result.Title,
+                Amount = result.Amount,
+                CategoryId = result.CategoryId,
+                CategoryName = result.Category.Name,
+                Date = result.Date,
+                Description = result.Description
+            });
         }
         [HttpPut]
         public async Task<IActionResult> UpdateExpenseAc(int id, UpdateExpenseDto updateExpenseDto)
@@ -88,9 +98,26 @@ namespace CostWise_API.Controllers
                 Description = updateExpenseDto.Description
             };
             var updated = await this.expense.UpdateExpense(id, updatedExpense, userId);
-            if (updated == null)
-                return BadRequest();
-            return Ok(updated);
+            if (!updated.Success) {
+                if (updated.ErrorCode == "ExpenseNotFound")
+                    return NotFound(updated.ErrorMessage);
+                if (updated.ErrorCode == "CategoryNotFound")
+                    return BadRequest(updated.ErrorMessage);
+                return Problem("Unexpected expense update result.");
+            }
+            if (updated.Data == null)
+                return Problem("Expense update returned no data.");
+            var data = updated.Data;
+            return Ok(new ExpenseResponseDto
+            {
+                Id = data.Id,
+                Title = data.Title,
+                Amount = data.Amount,
+                CategoryId = data.CategoryId,
+                CategoryName = data.Category.Name,
+                Date = data.Date,
+                Description = data.Description
+            });
         }
         [HttpDelete]
         public async Task<IActionResult> DeleteexpenseAc(int id)

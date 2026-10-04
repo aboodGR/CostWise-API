@@ -68,7 +68,14 @@ namespace CostWise_API.Controllers
             if (result == null) {
                 return BadRequest();
             }
-            return Ok(result);
+            return Ok(new IncomeResponse
+            {
+                Id = result.Id,
+                Title = result.Title,
+                Amount = result.Amount,
+                Date = result.Date,
+                Description = result.Description
+            });
         }
         [HttpPut]
         public async Task<IActionResult> UpdateIncomeAc(int id, UpdateIncomeDto updateIncomeDto)
@@ -85,7 +92,14 @@ namespace CostWise_API.Controllers
             var updated = await income.UpdateIncome(id, newIncome, userId);
             if (updated == null)
                 return NotFound();
-            return Ok(updated);
+            return Ok(new IncomeResponse
+            {
+                Id = updated.Id,
+                Title = updated.Title,
+                Amount = updated.Amount,
+                Date = updated.Date,
+                Description = updated.Description
+            });
         }
         [HttpDelete]
         public async Task<IActionResult> DeleteIncomeAc(int id)
