@@ -1,4 +1,4 @@
-﻿namespace CostWise_API.DTOs.Auth
+﻿namespace WalMart_ERP_System.DTOs.Auth
 {
     public class LoginResponseDto
     {

@@ -1,36 +1,33 @@
-﻿using CostWise_API.DTOs.Category;
-using CostWise_API.Interfaces;
-using CostWise_API.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using WalMart_ERP_System.DTOs.Category;
+using WalMart_ERP_System.Interfaces;
+using WalMart_ERP_System.Models;
 
-namespace CostWise_API.Controllers
+namespace WalMart_ERP_System.Controllers
 {
     [ApiController]
     [Route("[controller]")]
     [Authorize]
     public class CategoriesController : ControllerBase
     {
-        private readonly ICategoryService category;
+        private readonly ICategoryService _categoryService;
 
-        public CategoriesController(ICategoryService category)
+        public CategoriesController(ICategoryService categoryService)
         {
-            this.category = category;
+            _categoryService = categoryService;
         }
 
         [HttpGet]
         public async Task<IActionResult> GetAllCategoriesAc()
         {
-            var userIdClaim = User.FindFirst("UserId")?.Value;
-            var userId = int.Parse(userIdClaim);
+            var categories = await _categoryService.GetAllCategories();
 
-            var result = await category.GetAllCategories(userId);
-
-            var response = result.Select(x => new CategoryResponseDto
+            var response = categories.Select(category => new CategoryDto
             {
-                Id = x.Id,
-                Name = x.Name
-            });
+                Id = category.Id,
+                Name = category.Name
+            }).ToList();
 
             return Ok(response);
         }
@@ -38,20 +35,16 @@ namespace CostWise_API.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> GetCategoryByIdAc(int id)
         {
-            var userIdClaim = User.FindFirst("UserId")?.Value;
-            var userId = int.Parse(userIdClaim);
-
-            var result = await category.GetCategoryById(id, userId);
-
-            if (result == null)
+            var category = await _categoryService.GetCategoryById(id);
+            if (category == null)
             {
                 return NotFound();
             }
 
-            var response = new CategoryResponseDto
+            var response = new CategoryDto
             {
-                Id = result.Id,
-                Name = result.Name
+                Id = category.Id,
+                Name = category.Name
             };
 
             return Ok(response);
@@ -60,64 +53,84 @@ namespace CostWise_API.Controllers
         [HttpPost]
         public async Task<IActionResult> AddCategoryAc(CreateCategoryDto createCategoryDto)
         {
-            var userIdClaim = User.FindFirst("UserId")?.Value;
-            var userId = int.Parse(userIdClaim);
-
             var newCategory = new Category
             {
-                Name = createCategoryDto.Name,
-                UserId = userId
+                Name = createCategoryDto.Name
             };
 
-            var categories = await category.AddCategory(newCategory);
-
-            if (categories == null)
+            var category = await _categoryService.AddCategory(newCategory);
+            if (category == null)
             {
-                return BadRequest();
+                return BadRequest("A category with this name already exists.");
             }
 
-            return Ok(new CategoryResponseDto { Id = categories.Id, Name = categories.Name });
+            var response = new CategoryDto
+            {
+                Id = category.Id,
+                Name = category.Name
+            };
+
+            return Ok(response);
         }
 
-        [HttpPut]
+        [HttpPut("{id}")]
         public async Task<IActionResult> UpdateCategoryAc(int id, UpdateCategoryDto updateCategoryDto)
         {
-            var userIdClaim = User.FindFirst("UserId")?.Value;
-            var userId = int.Parse(userIdClaim);
-
-            var newCategory = new Category
+            var category = new Category
             {
                 Name = updateCategoryDto.Name
             };
 
-            var updated = await category.UpdateCategory(id, newCategory, userId);
-
+            var updated = await _categoryService.UpdateCategory(id, category);
             if (!updated.Success)
             {
                 if (updated.ErrorCode == "CategoryNotFound")
+                {
                     return NotFound(updated.ErrorMessage);
+                }
+
                 if (updated.ErrorCode == "DuplicateCategory")
+                {
                     return BadRequest(updated.ErrorMessage);
+                }
+
                 return Problem("Unexpected category update result.");
             }
-            if (updated.Data == null)
-                return Problem("Category update returned no data.");
 
-            return Ok(new CategoryResponseDto { Id = updated.Data.Id, Name = updated.Data.Name });
+            if (updated.Data == null)
+            {
+                return Problem("Category update returned no data.");
+            }
+
+            var response = new CategoryDto
+            {
+                Id = updated.Data.Id,
+                Name = updated.Data.Name
+            };
+
+            return Ok(response);
         }
 
-        [HttpDelete]
+        [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteCategoryAc(int id)
         {
-            var userIdClaim = User.FindFirst("UserId")?.Value;
-            var userId = int.Parse(userIdClaim);
+            var deleted = await _categoryService.DeleteCategory(id);
+            if (!deleted.Success)
+            {
+                if (deleted.ErrorCode == "CategoryNotFound")
+                {
+                    return NotFound(deleted.ErrorMessage);
+                }
 
-            var deleted = await category.DeleteCategory(id, userId);
+                if (deleted.ErrorCode == "CategoryHasProducts")
+                {
+                    return Conflict(deleted.ErrorMessage);
+                }
 
-            if (deleted == false)
-                return NotFound();
+                return Problem("Unexpected category delete result.");
+            }
 
-            return Ok(deleted);
+            return NoContent();
         }
     }
 }

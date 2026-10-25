@@ -1,15 +1,14 @@
-﻿using CostWise_API.Models;
+using WalMart_ERP_System.DTOs.Category;
+using WalMart_ERP_System.Models;
+using WalMart_ERP_System.Results;
 
-using CostWise_API.Results;
+namespace WalMart_ERP_System.Interfaces;
 
-namespace CostWise_API.Interfaces
+public interface ICategoryService
 {
-    public interface ICategoryService
-    {
-        Task<List<Category>> GetAllCategories(int userId);
-        Task<Category?> GetCategoryById(int id, int userId);
-        Task<Category?> AddCategory(Category category);
-        Task<Result<Category>> UpdateCategory(int id, Category category, int userId);
-        Task<bool> DeleteCategory(int id, int userId);
-    }
+    Task<Category?> AddCategory(Category category);
+    Task<List<Category>> GetAllCategories();
+    Task<Category?> GetCategoryById(int id);
+    Task<Result<Category>> UpdateCategory(int id, Category category);
+    Task<Result<bool>> DeleteCategory(int id);
 }

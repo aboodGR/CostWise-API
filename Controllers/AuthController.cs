@@ -1,9 +1,10 @@
-﻿using CostWise_API.DTOs.Auth;
-using CostWise_API.Interfaces;
-using CostWise_API.Services;
+﻿using WalMart_ERP_System.DTOs.Auth;
+using WalMart_ERP_System.Interfaces;
+using WalMart_ERP_System.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace CostWise_API.Controllers
+namespace WalMart_ERP_System.Controllers
 {
     [ApiController]
     [Route("[controller]")]
@@ -14,6 +15,7 @@ namespace CostWise_API.Controllers
         {
             _authService = authService;
         }
+        [AllowAnonymous]
         [HttpPost("register")]
         public async Task<IActionResult> RegisterAc(RegisterDto registerDto) {
             var results = await _authService.Register(registerDto);
@@ -21,6 +23,7 @@ namespace CostWise_API.Controllers
                 return BadRequest();
             return Ok(results);
         }
+        [AllowAnonymous]
         [HttpPost("login")]
         public async Task<IActionResult> LoginAc(LoginDto loginDto)
         {
