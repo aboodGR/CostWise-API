@@ -1,8 +1,9 @@
-using WalMart_ERP_System.DTOs.Reports;
+﻿using CostWise_API.Models;
 
-namespace WalMart_ERP_System.Interfaces;
-
-public interface IReportService
+namespace CostWise_API.Interfaces
 {
-    Task<ReportDto> GetReport(DateTime fromUtc, DateTime toUtc, string groupBy);
+    public interface IReportService
+    {
+        Task<ReportSummary> GetSummary(int userId);
+    }
 }

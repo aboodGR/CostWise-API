@@ -1,6 +1,6 @@
-﻿using WalMart_ERP_System.DTOs.Auth;
+﻿using CostWise_API.DTOs.Auth;
 
-namespace WalMart_ERP_System.Interfaces
+namespace CostWise_API.Interfaces
 {
     public interface IAuthService
     {

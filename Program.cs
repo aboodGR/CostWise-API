@@ -1,7 +1,8 @@
-using WalMart_ERP_System.Data;
-using WalMart_ERP_System.Interfaces;
-using WalMart_ERP_System.Models;
-using WalMart_ERP_System.Services;
+using CostWise_API.Configuration;
+using CostWise_API.Data;
+using CostWise_API.Interfaces;
+using CostWise_API.Models;
+using CostWise_API.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -21,12 +22,11 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(
         builder.Configuration.GetConnectionString("DefaultConnection")));
 
-builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<ICategoryService, CategoryService>();
-builder.Services.AddScoped<IProductService, ProductService>();
-builder.Services.AddScoped<IInventoryService, InventoryService>();
-builder.Services.AddScoped<ISalesService, SalesService>();
-builder.Services.AddScoped<IReportService, ReportService>();
+builder.Services.AddScoped<IExpenseService, ExpenseService>();
+builder.Services.AddScoped<IIncomeService, IncomeService>();
+builder.Services.AddScoped<IReportService, ReportSummaryService>();
+builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 // need to read it again !!
@@ -59,6 +59,9 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 builder.Services.AddAuthorization();
 
 builder.Services.AddScoped<IPasswordHasher<User>, PasswordHasher<User>>();
+
+builder.Services.Configure<CostWiseSettings>(
+    builder.Configuration.GetSection("CostWiseSettings"));
 
 var app = builder.Build();
 

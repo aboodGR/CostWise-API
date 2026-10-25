@@ -1,10 +1,12 @@
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
-namespace WalMart_ERP_System.DTOs.Category;
-
-public class CreateCategoryDto
+namespace CostWise_API.DTOs.Category
 {
-    [Required]
-    [MaxLength(100)]
-    public string Name { get; set; } = string.Empty;
+    public class CreateCategoryDto
+    {
+        [Required]
+        [MaxLength(20)]
+        public string Name { get; set; } = string.Empty;
+
+    }
 }

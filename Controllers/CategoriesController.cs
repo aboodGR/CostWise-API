@@ -1,33 +1,36 @@
+﻿using CostWise_API.DTOs.Category;
+using CostWise_API.Interfaces;
+using CostWise_API.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using WalMart_ERP_System.DTOs.Category;
-using WalMart_ERP_System.Interfaces;
-using WalMart_ERP_System.Models;
 
-namespace WalMart_ERP_System.Controllers
+namespace CostWise_API.Controllers
 {
     [ApiController]
     [Route("[controller]")]
     [Authorize]
     public class CategoriesController : ControllerBase
     {
-        private readonly ICategoryService _categoryService;
+        private readonly ICategoryService category;
 
-        public CategoriesController(ICategoryService categoryService)
+        public CategoriesController(ICategoryService category)
         {
-            _categoryService = categoryService;
+            this.category = category;
         }
 
         [HttpGet]
         public async Task<IActionResult> GetAllCategoriesAc()
         {
-            var categories = await _categoryService.GetAllCategories();
+            var userIdClaim = User.FindFirst("UserId")?.Value;
+            var userId = int.Parse(userIdClaim);
 
-            var response = categories.Select(category => new CategoryDto
+            var result = await category.GetAllCategories(userId);
+
+            var response = result.Select(x => new CategoryResponseDto
             {
-                Id = category.Id,
-                Name = category.Name
-            }).ToList();
+                Id = x.Id,
+                Name = x.Name
+            });
 
             return Ok(response);
         }
@@ -35,16 +38,20 @@ namespace WalMart_ERP_System.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> GetCategoryByIdAc(int id)
         {
-            var category = await _categoryService.GetCategoryById(id);
-            if (category == null)
+            var userIdClaim = User.FindFirst("UserId")?.Value;
+            var userId = int.Parse(userIdClaim);
+
+            var result = await category.GetCategoryById(id, userId);
+
+            if (result == null)
             {
                 return NotFound();
             }
 
-            var response = new CategoryDto
+            var response = new CategoryResponseDto
             {
-                Id = category.Id,
-                Name = category.Name
+                Id = result.Id,
+                Name = result.Name
             };
 
             return Ok(response);
@@ -53,84 +60,64 @@ namespace WalMart_ERP_System.Controllers
         [HttpPost]
         public async Task<IActionResult> AddCategoryAc(CreateCategoryDto createCategoryDto)
         {
+            var userIdClaim = User.FindFirst("UserId")?.Value;
+            var userId = int.Parse(userIdClaim);
+
             var newCategory = new Category
             {
-                Name = createCategoryDto.Name
+                Name = createCategoryDto.Name,
+                UserId = userId
             };
 
-            var category = await _categoryService.AddCategory(newCategory);
-            if (category == null)
+            var categories = await category.AddCategory(newCategory);
+
+            if (categories == null)
             {
-                return BadRequest("A category with this name already exists.");
+                return BadRequest();
             }
 
-            var response = new CategoryDto
-            {
-                Id = category.Id,
-                Name = category.Name
-            };
-
-            return Ok(response);
+            return Ok(new CategoryResponseDto { Id = categories.Id, Name = categories.Name });
         }
 
-        [HttpPut("{id}")]
+        [HttpPut]
         public async Task<IActionResult> UpdateCategoryAc(int id, UpdateCategoryDto updateCategoryDto)
         {
-            var category = new Category
+            var userIdClaim = User.FindFirst("UserId")?.Value;
+            var userId = int.Parse(userIdClaim);
+
+            var newCategory = new Category
             {
                 Name = updateCategoryDto.Name
             };
 
-            var updated = await _categoryService.UpdateCategory(id, category);
+            var updated = await category.UpdateCategory(id, newCategory, userId);
+
             if (!updated.Success)
             {
                 if (updated.ErrorCode == "CategoryNotFound")
-                {
                     return NotFound(updated.ErrorMessage);
-                }
-
                 if (updated.ErrorCode == "DuplicateCategory")
-                {
                     return BadRequest(updated.ErrorMessage);
-                }
-
                 return Problem("Unexpected category update result.");
             }
-
             if (updated.Data == null)
-            {
                 return Problem("Category update returned no data.");
-            }
 
-            var response = new CategoryDto
-            {
-                Id = updated.Data.Id,
-                Name = updated.Data.Name
-            };
-
-            return Ok(response);
+            return Ok(new CategoryResponseDto { Id = updated.Data.Id, Name = updated.Data.Name });
         }
 
-        [HttpDelete("{id}")]
+        [HttpDelete]
         public async Task<IActionResult> DeleteCategoryAc(int id)
         {
-            var deleted = await _categoryService.DeleteCategory(id);
-            if (!deleted.Success)
-            {
-                if (deleted.ErrorCode == "CategoryNotFound")
-                {
-                    return NotFound(deleted.ErrorMessage);
-                }
+            var userIdClaim = User.FindFirst("UserId")?.Value;
+            var userId = int.Parse(userIdClaim);
 
-                if (deleted.ErrorCode == "CategoryHasProducts")
-                {
-                    return Conflict(deleted.ErrorMessage);
-                }
+            var deleted = await category.DeleteCategory(id, userId);
 
-                return Problem("Unexpected category delete result.");
-            }
+            if (deleted == false)
+                return NotFound();
 
-            return NoContent();
+            return Ok(deleted);
         }
     }
 }

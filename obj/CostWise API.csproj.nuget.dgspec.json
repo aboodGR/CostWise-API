@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Pc\\source\\repos\\WalMart_ERP_System\\CostWise API\\CostWise API.csproj": {}
+    "C:\\Users\\Pc\\source\\repos\\CostWise API\\CostWise API\\CostWise API.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Pc\\source\\repos\\WalMart_ERP_System\\CostWise API\\CostWise API.csproj": {
+    "C:\\Users\\Pc\\source\\repos\\CostWise API\\CostWise API\\CostWise API.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Pc\\source\\repos\\WalMart_ERP_System\\CostWise API\\CostWise API.csproj",
+        "projectUniqueName": "C:\\Users\\Pc\\source\\repos\\CostWise API\\CostWise API\\CostWise API.csproj",
         "projectName": "CostWise API",
-        "projectPath": "C:\\Users\\Pc\\source\\repos\\WalMart_ERP_System\\CostWise API\\CostWise API.csproj",
+        "projectPath": "C:\\Users\\Pc\\source\\repos\\CostWise API\\CostWise API\\CostWise API.csproj",
         "packagesPath": "C:\\Users\\Pc\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Pc\\source\\repos\\WalMart_ERP_System\\CostWise API\\obj\\",
+        "outputPath": "C:\\Users\\Pc\\source\\repos\\CostWise API\\CostWise API\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -77,10 +77,6 @@
             "Swashbuckle.AspNetCore": {
               "target": "Package",
               "version": "[10.2.3, )"
-            },
-            "System.Security.Cryptography.Pkcs": {
-              "target": "Package",
-              "version": "[10.0.13, )"
             }
           },
           "imports": [

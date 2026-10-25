@@ -1,49 +1,26 @@
+﻿using CostWise_API.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using WalMart_ERP_System.Interfaces;
 
-namespace WalMart_ERP_System.Controllers
+namespace CostWise_API.Controllers
 {
     [ApiController]
     [Route("[controller]")]
     [Authorize]
     public class ReportsController : ControllerBase
     {
-        private readonly IReportService _reportService;
-
+        private readonly IReportService reportService;
         public ReportsController(IReportService reportService)
         {
-            _reportService = reportService;
+            this.reportService = reportService;
         }
 
-        [HttpGet]
-        public async Task<IActionResult> GetReport(
-            DateTimeOffset? fromUtc,
-            DateTimeOffset? toUtc,
-            string groupBy = "day")
-        {
-            if (!fromUtc.HasValue || !toUtc.HasValue)
-            {
-                return BadRequest("Both fromUtc and toUtc are required.");
-            }
-
-            if (fromUtc.Value > toUtc.Value)
-            {
-                return BadRequest("fromUtc must be earlier than or equal to toUtc.");
-            }
-
-            if (!string.Equals(groupBy, "day", StringComparison.OrdinalIgnoreCase)
-                && !string.Equals(groupBy, "month", StringComparison.OrdinalIgnoreCase))
-            {
-                return BadRequest("groupBy must be either 'day' or 'month'.");
-            }
-
-            var report = await _reportService.GetReport(
-                fromUtc.Value.UtcDateTime,
-                toUtc.Value.UtcDateTime,
-                groupBy.ToLowerInvariant());
-
-            return Ok(report);
+        [HttpGet("summary")]
+        public async Task<IActionResult> GetSummary() {
+            var userIdClaim = User.FindFirst("UserId")!.Value;
+            var userId = int.Parse(userIdClaim);
+            return Ok(await reportService.GetSummary(userId));
         }
+
     }
 }

@@ -1,16 +1,15 @@
-﻿using WalMart_ERP_System.Data;
-using WalMart_ERP_System.DTOs.Auth;
-using WalMart_ERP_System.Interfaces;
-using WalMart_ERP_System.Models;
+﻿using CostWise_API.Data;
+using CostWise_API.DTOs.Auth;
+using CostWise_API.Interfaces;
+using CostWise_API.Models;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 
-namespace WalMart_ERP_System.Services
+namespace CostWise_API.Services
 {
     public class AuthService : IAuthService
     {
@@ -34,17 +33,7 @@ namespace WalMart_ERP_System.Services
             };
             user.PasswordHash = _passwordHasher.HashPassword(user, registerDto.Password);
             await _context.User.AddAsync(user);
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateException exception)
-                when (exception.InnerException is SqlException sqlException
-                    && sqlException.Number is 2601 or 2627)
-            {
-                return false;
-            }
-
+            await _context.SaveChangesAsync();
             return true;
 
         }

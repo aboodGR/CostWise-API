@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
-namespace WalMart_ERP_System.Models
+namespace CostWise_API.Models
 {
     public class User
     {

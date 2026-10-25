@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace WalMart_ERP_System.DTOs.Auth
+namespace CostWise_API.DTOs.Auth
 {
     public class RegisterDto
     {

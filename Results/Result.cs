@@ -1,4 +1,4 @@
-﻿namespace WalMart_ERP_System.Results
+﻿namespace CostWise_API.Results
 {
     public class Result<T>
     {
